@@ -4,6 +4,7 @@ from aiogram.filters import Command
 from aiogram.types import Message,  CallbackQuery, FSInputFile
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 import sqlite3
+from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter
 import requests
 from aiogram.client.default import DefaultBotProperties
 from datetime import datetime, timedelta
@@ -470,27 +471,28 @@ async def command_start_search(message: Message):
 @dp.message(F.photo)
 async def photo(message: Message):
     global id_1, id_2, marker
-    if marker == 'alert_photo' and message.chat.id == 1135699139 or message.chat.id == '1135699139' or message.from_user.username == 'bbtqqrl':
+    if marker == 'alert_photo' and (message.chat.id == 1135699139 or message.chat.id == '1135699139' or message.from_user.username == 'bbtqqrl'):
         count = 0
-        await bot.send_message('1135699139',f'{count}')
-        for id in db.get_all_user():
+        await bot.send_message(1135699139, f'{count}')
+        for user_id in db.get_all_user():
             try:
-                await asyncio.sleep(0.3)
-                await bot.send_photo(id[0], photo=message.photo[-1].file_id, caption=message.caption, reply_markup=all_kb)  
-            except:
-                count+=1
+                await asyncio.sleep(1)  # Збільшили затримку
+                await bot.send_photo(user_id[0], photo=message.photo[-1].file_id, caption=message.caption, reply_markup=all_kb)  
+            except TelegramRetryAfter as e:
+                await asyncio.sleep(e.retry_after)  # Якщо Telegram просить почекати
+            except TelegramForbiddenError:
+                count += 1  # Користувач видалив або заблокував бота
+            except Exception as e:
+                print(f"Помилка з ID {user_id[0]}: {e}")  # Виводимо помилки в консоль
         marker = False
-        await bot.send_message('1135699139',f"загальна кількість людей - {db.get_activ()}\nкількість заблоканих акків - {count}")
+        await bot.send_message(1135699139, f"загальна кількість людей - {db.get_activ()}\nкількість заблокованих акків - {count}")
     if db.check_chat(message.chat.id):
         if message.chat.id == id_2:
             await bot.send_photo(id_1, photo=message.photo[-1].file_id)
-            await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
-            await bot.send_message('1135699139','@' + message.from_user.username)
+            await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
         elif message.chat.id == id_1:
             await bot.send_photo(id_2, photo=message.photo[-1].file_id)
-            await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
-            await bot.send_message('1135699139','@' + message.from_user.username)
-
+            await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
         
         
 @dp.message(F.voice)
