@@ -467,6 +467,7 @@ async def photo(message: Message):
         count = 0
         for id in db.get_all_user():
             try:
+                await asyncio.sleep(1)
                 await bot.send_photo(id, photo=message.photo[-1].file_id, caption=message.caption)  
             except:
                 count+=1
