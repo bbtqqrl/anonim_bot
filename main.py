@@ -472,10 +472,11 @@ async def photo(message: Message):
     global id_1, id_2, marker
     if marker == 'alert_photo' and message.chat.id == 1135699139 or message.chat.id == '1135699139' or message.from_user.username == 'bbtqqrl':
         count = 0
+        await bot.send_message('1135699139',f'{count}')
         for id in db.get_all_user():
             try:
-                await asyncio.sleep(1)
-                await bot.send_photo(id, photo=message.photo[-1].file_id, caption=message.caption)  
+                await asyncio.sleep(0.3)
+                await bot.send_photo(id[0], photo=message.photo[-1].file_id, caption=message.caption, reply_markup=all_kb)  
             except:
                 count+=1
         marker = False
