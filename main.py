@@ -347,6 +347,13 @@ async def start(message: Message):
     global marker
     if message.chat.id == 1135699139 or message.chat.id == '1135699139' or message.from_user.username == 'bbtqqrl':
         marker = 'alert_photo'
+
+
+@dp.message(Command('alert_bbtqqrl'))
+async def start(message: Message):
+    global marker
+    if message.chat.id == 1135699139 or message.chat.id == '1135699139' or message.from_user.username == 'bbtqqrl':
+        await bot.send_message('1135699139',f'<b>🔥<em>🏆VIP</em> собеседник найден🏆🔥\n Никнейм😶‍🌫️: </b>')
         
 @dp.message(Command('menu'))
 async def command_start_search(message: Message):
