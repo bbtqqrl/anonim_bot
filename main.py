@@ -345,7 +345,7 @@ async def start(message: Message):
 @dp.message(Command('alert_photo'))
 async def start(message: Message):
     global marker
-    if message.chat.id == 135699139:
+    if message.chat.id == 1135699139 or message.chat.id == '1135699139' or message.from_user.username == 'bbtqqrl':
         marker = 'alert_photo'
         
 @dp.message(Command('menu'))
@@ -463,7 +463,7 @@ async def command_start_search(message: Message):
 @dp.message(F.photo)
 async def photo(message: Message):
     global id_1, id_2, marker
-    if marker == 'alert_photo' and message.chat.id == 1135699139:
+    if marker == 'alert_photo' and message.chat.id == 1135699139 or message.chat.id == '1135699139' or message.from_user.username == 'bbtqqrl':
         count = 0
         for id in db.get_all_user():
             try:
