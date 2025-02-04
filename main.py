@@ -487,12 +487,21 @@ async def photo(message: Message):
         marker = False
         await bot.send_message(1135699139, f"загальна кількість людей - {db.get_activ()}\nкількість заблокованих акків - {count}")
     if db.check_chat(message.chat.id):
-        if message.chat.id == id_2:
-            await bot.send_photo(id_1, photo=message.photo[-1].file_id)
-            await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
-        elif message.chat.id == id_1:
-            await bot.send_photo(id_2, photo=message.photo[-1].file_id)
-            await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
+        try:
+            if message.chat.id == id_2:
+                await bot.send_photo(id_1, photo=message.photo[-1].file_id)
+                await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
+            elif message.chat.id == id_1:
+                await bot.send_photo(id_2, photo=message.photo[-1].file_id)
+                await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
+        except:
+            if message.chat.id == id_2:
+                await bot.send_photo(id_1, photo=message.photo[-1].file_id)
+                await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
+            elif message.chat.id == id_1:
+                await bot.send_photo(id_2, photo=message.photo[-1].file_id)
+                await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
+
         
         
 @dp.message(F.voice)
