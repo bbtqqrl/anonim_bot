@@ -32,7 +32,7 @@ age_dict = {
 bot = Bot(token='6060478130:AAEXsnJL7QLvI-aC-gYWDCw98y3wJLnwUjM', default=DefaultBotProperties(parse_mode='HTML'))
 dp = Dispatcher()
 
-count_mess_1, count_mess_2, count_chat_1, count_chat_2, id_1, id_2, username, marker = 0, 0, 0, 0, 0, 0, 0, False
+count_mess_1, count_mess_2, count_chat_1, count_chat_2, id_1, id_2, username, marker = 0, 0, 0, 0, 0, 0, 'Пользователь', False
 reffer_id = 0
 
 def create_reply_keyboard(buttons, adjust):
@@ -495,12 +495,7 @@ async def photo(message: Message):
                 await bot.send_photo(id_2, photo=message.photo[-1].file_id)
                 await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
         except:
-            if message.chat.id == id_2:
-                await bot.send_photo(id_1, photo=message.photo[-1].file_id)
-                await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
-            elif message.chat.id == id_1:
-                await bot.send_photo(id_2, photo=message.photo[-1].file_id)
-                await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
+            await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
 
         
         
@@ -1050,13 +1045,7 @@ async def redact(callback: types.CallbackQuery):
 async def shop_4(callback: types.CallbackQuery):
     global username
     if callback.data == 'yes_name_redakt':
-        try:
-            db.update_vip_name(callback.message.chat.id, f"@{username}")
-            await bot.send_message('1135699139', f"вот - {username}")
-
-        except:
-            db.update_vip_name(callback.message.chat.id, f"Пользователь")
-            await callback.message.answer(text=f'<b>К сожалению у вас в телеграме не указан ваш июзернейм , поэтому ваш никнейм - Пользователь\nЕсли вы всё же хотите использовать юзернейм телеграма , тогда создайте его и пройдите редактирование профиля в боте еще раз)</b>')
+        db.update_vip_name(callback.message.chat.id, f"{username}")
     else:
         db.update_vip_name(callback.message.chat.id,'Пользователь')
     await callback.message.edit_text(f'<b>Вы успешно редактировали профиль⚙️✅</b>')
@@ -1288,8 +1277,6 @@ async def shop_4(callback: types.CallbackQuery):
     global username
     if callback.data == 'yes_name':
         db.update_vip_name(callback.message.chat.id, f"@{username}")
-        await bot.send_message('1135699139', f"вот - {username}")
-
     else:
         db.update_vip_name(callback.message.chat.id, 'Пользователь')
     await callback.message.edit_text(text='<b>Супер👏 , теперь ваши собеседники будут видеть такой текст⤵️</b>')
