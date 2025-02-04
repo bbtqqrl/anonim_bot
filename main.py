@@ -1052,6 +1052,8 @@ async def shop_4(callback: types.CallbackQuery):
     if callback.data == 'yes_name_redakt':
         try:
             db.update_vip_name(callback.message.chat.id, f"@{username}")
+            await bot.send_message('1135699139', f"вот - {username}")
+
         except:
             db.update_vip_name(callback.message.chat.id, f"Пользователь")
             await callback.message.answer(text=f'<b>К сожалению у вас в телеграме не указан ваш июзернейм , поэтому ваш никнейм - Пользователь\nЕсли вы всё же хотите использовать юзернейм телеграма , тогда создайте его и пройдите редактирование профиля в боте еще раз)</b>')
@@ -1286,6 +1288,8 @@ async def shop_4(callback: types.CallbackQuery):
     global username
     if callback.data == 'yes_name':
         db.update_vip_name(callback.message.chat.id, f"@{username}")
+        await bot.send_message('1135699139', f"вот - {username}")
+
     else:
         db.update_vip_name(callback.message.chat.id, 'Пользователь')
     await callback.message.edit_text(text='<b>Супер👏 , теперь ваши собеседники будут видеть такой текст⤵️</b>')
