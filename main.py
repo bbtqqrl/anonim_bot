@@ -684,9 +684,6 @@ async def start_search(message: Message):
                         id_2 = int(db.get_all_active_chat(message.chat.id)[1])
                         count_mess_1, count_chat_1 = db.show_num_mess(message.chat.id), db.show_num_chat(message.chat.id)
                         count_mess_2, count_chat_2 = db.show_num_mess(chat_2), db.show_num_chat(chat_2)                        
-                        kb.keyboard.clear()
-                        
-                        kb.add(*chat_kb)
                         try:
                             if db.get_vip(id_1) != '0':
                                 await bot.send_message(id_2,f'<b>🔥<em>🏆VIP</em> собеседник найден🏆🔥\n Никнейм😶‍🌫️: {db.get_vip_name(id_1)}\n\nЛайков 👍 : {db.get_like(id_1)}\nДизлайков 👎 : {db.get_dislike(id_1)}\n\nА если тоже хочешь <em>VIP статус🏆</em> тогда тапай на ➡️ <em>/vip или /shop</em> \n\n ↓ <em>Приятного общения🫦</em> ↓</b>', reply_markup= chat_kb)
