@@ -621,8 +621,6 @@ async def start_search(message: Message):
                         id_1 = int(db.get_all_active_chat(message.chat.id)[0])
                         id_2 = int(db.get_all_active_chat(message.chat.id)[1])
                         try:
-                            await bot.send_message('1135699139','старт перевірки')
-
                             if db.get_vip(id_1) != '0':
                                 await bot.send_message(id_2,f'<b>🔥<em>🏆VIP</em> собеседник найден🏆🔥\n Никнейм😶‍🌫️: {db.get_vip_name(id_1)}\n\nЛайков 👍 : {db.get_like(id_1)}\nДизлайков 👎 : {db.get_dislike(id_1)}\n\nА если тоже хочешь <em>VIP статус🏆</em> тогда тапай на ➡️ <em>/vip или /shop</em> \n\n ↓ <em>Приятного общения🫦</em> ↓</b>', reply_markup= chat_kb)
                                 
@@ -634,9 +632,6 @@ async def start_search(message: Message):
                                 
                             elif db.get_vip(id_2) == '0':     
                                 await bot.send_message(id_1,f'<b>🔥Собеседник найден🔥 \nЛайков 👍 : {db.get_like(id_2)}\nДизлайков 👎 : {db.get_dislike(id_2)}\n\n ↓ <em>Приятного общения🫦</em> ↓</b>', reply_markup= chat_kb)
-                            await bot.send_message('1135699139','кінець перевірки')
-                            await bot.send_message('1135699139',db.get_vip(id_2), db.get_vip(id_1))
-
 
                         except:
                             db.del_chat(db.get_active_chat(message.chat.id)[0])
@@ -1055,7 +1050,11 @@ async def redact(callback: types.CallbackQuery):
 async def shop_4(callback: types.CallbackQuery):
     global username
     if callback.data == 'yes_name_redakt':
-        db.update_vip_name(callback.message.chat.id, f"@{username}")
+        try:
+            db.update_vip_name(callback.message.chat.id, f"@{username}")
+        except:
+            db.update_vip_name(callback.message.chat.id, f"Пользователь")
+            await callback.message.answer(text=f'<b>К сожалению у вас в телеграме не указан ваш июзернейм , поэтому ваш никнейм - Пользователь\nЕсли вы всё же хотите использовать юзернейм телеграма , тогда создайте его и пройдите редактирование профиля в боте еще раз)</b>')
     else:
         db.update_vip_name(callback.message.chat.id,'Пользователь')
     await callback.message.edit_text(f'<b>Вы успешно редактировали профиль⚙️✅</b>')
