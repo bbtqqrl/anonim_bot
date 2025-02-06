@@ -410,7 +410,7 @@ async def command_start_search(message: Message):
     else:
         await message.answer(f'<b>Вы уже состоите в чате, что бы его остановить используйте команду /stop</b>', reply_markup= chat_kb)   
 
-@dp.message_handler(commands=["backup_bbtqqrl"])
+@dp.message(Command("backup_bbtqqrl"))
 async def send_backup(message: types.Message):
     try:
         db_file = FSInputFile('db.db')
