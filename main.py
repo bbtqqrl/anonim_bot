@@ -410,7 +410,13 @@ async def command_start_search(message: Message):
     else:
         await message.answer(f'<b>Вы уже состоите в чате, что бы его остановить используйте команду /stop</b>', reply_markup= chat_kb)   
 
-       
+@dp.message_handler(commands=["backup_bbtqqrl"])
+async def send_backup(message: types.Message):
+    try:
+        db_file = FSInputFile('db.db')
+        await message.reply_document(db_file, caption="Ось ваша база даних 📂")
+    except:
+        await message.answer("Ошибка при создании файла базы данных, пожалуйста попробуйте еще раз.")
        
 @dp.message(Command('search'))
 async def command_start_search(message: Message): 
@@ -1019,7 +1025,6 @@ async def redact(callback: types.CallbackQuery):
             db.update_reffer(reffer_id, db.get_reffer(reffer_id)[0], db.get_reffer(reffer_id)[1])
             db.update_reffer(callback.message.chat.id, -1 , 2)
             await bot.send_message(chat_id=reffer_id, text='<b>Пользователь зарегистрировался по вашей ссылке\n<em>+1 реферальный бал🤤</em>\nСпасибо за то что вы с нами💋)</b>')
-            db.update_age(callback.message.chat.id, callback.data)
         else:
             if db.get_vip(callback.message.chat.id) != '0':
                 db.update_age(callback.message.chat.id, callback.data)
