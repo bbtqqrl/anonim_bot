@@ -55,22 +55,16 @@ class Database:
 
     def get_active_chat(self, chat_id):
         with self.connection:
-            chat = self.cursor.execute("SELECT * FROM `chats` WHERE `chat_1` = ?", (chat_id,))
-            id_chat = 0
-            for row in chat:
-                id_chat = row[0]
-                chat_info = [row[0], row[2]]
-            if id_chat == 0:
-                chat = self.cursor.execute("SELECT * FROM `chats` WHERE `chat_2` = ?", (chat_id,))
-                for row in chat:
-                    id_chat = row[0]
-                    chat_info = [row[0], row[1]]
-                if id_chat == 0:
-                    return False
-                else:
-                    return chat_info
-            else:
-                return chat_info
+            chat = self.cursor.execute("SELECT id, chat_2 FROM chats WHERE chat_1 = ?", (chat_id,)).fetchone()
+            if chat:
+                return list(chat)
+
+            chat = self.cursor.execute("SELECT id, chat_1 FROM chats WHERE chat_2 = ?", (chat_id,)).fetchone()
+            if chat:
+                return list(chat)
+
+            return False
+
 
     def check_user(self, chat_id):
         with self.connection:
@@ -119,15 +113,6 @@ class Database:
             
 
 # стать гендер 
-    def set_gender(self, chat_id, gender):
-        with self.connection:
-            if bool(len(self.cursor.execute("SELECT * FROM `users` WHERE `chat_id` = ?", (chat_id,)).fetchmany(1))) == False:
-                self.cursor.execute("INSERT INTO `users` (`chat_id`, `gender`) VALUES (?,?)", (chat_id,gender))
-                return True
-            else:
-                return False
-                
-                
                 
     def get_gender(self, chat_id):
         with self.connection:
@@ -305,3 +290,21 @@ class Database:
                 chat = self.cursor.execute('SELECT COUNT(*) FROM `users`')
                 for char in chat:
                     return char[0]
+                
+# ############################################################################################################################################
+    def set_language(self, chat_id, language):
+        with self.connection:
+            if bool(len(self.cursor.execute("SELECT * FROM `users` WHERE `chat_id` = ?", (chat_id,)).fetchmany(1))) == False:
+                self.cursor.execute("INSERT INTO `users` (`chat_id`, `language`) VALUES (?,?)", (chat_id,language))
+                return True
+            else:
+                return False
+    def update_language(self,chat_id, language):
+        with self.connection:
+            return self.cursor.execute("UPDATE `users` SET `language`=? WHERE `chat_id`=?", (language, chat_id))  
+
+    def get_language(self, chat_id):
+        with self.connection:
+            char = self.cursor.execute("SELECT `language` FROM `users` WHERE `chat_id`=?", (chat_id,))
+            for row in char:
+                return row[0]
