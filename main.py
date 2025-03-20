@@ -10,6 +10,10 @@ from aiogram.client.default import DefaultBotProperties
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from database import Database
+from dotenv import load_dotenv
+import os
+load_dotenv()
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 
 # ____________тут більшість взіх змінн та частково кнопки______
@@ -54,7 +58,7 @@ language_dict = {
     'eng': {'ua' : 'Ukrainian', 'ru' : 'Russian', 'eng' : 'English'}
 }
 
-bot = Bot(token='6060478130:AAEXsnJL7QLvI-aC-gYWDCw98y3wJLnwUjM', default=DefaultBotProperties(parse_mode='HTML'))
+bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode='HTML'))
 dp = Dispatcher()
 
 count_mess_1, count_mess_2, count_chat_1, count_chat_2, id_1, id_2, username, marker = 0, 0, 0, 0, 0, 0, 'Пользователь', False
