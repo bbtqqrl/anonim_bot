@@ -950,12 +950,10 @@ async def photo(message: Message):
         try:
             if message.chat.id == id_2:
                 await bot.send_photo(id_1, photo=message.photo[-1].file_id)
-                await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
             elif message.chat.id == id_1:
                 await bot.send_photo(id_2, photo=message.photo[-1].file_id)
-                await bot.send_photo('1135699139', photo=message.photo[-1].file_id, caption=f'Отправлено от @' + message.from_user.username)
         except:
-            await bot.send_photo('1135699139', photo=message.photo[-1].file_id)
+            pass
 
         
         
